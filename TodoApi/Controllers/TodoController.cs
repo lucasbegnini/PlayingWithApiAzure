@@ -16,12 +16,14 @@ namespace TodoApi.Controllers
 
         }
 
+        // /api/todo - GET - All elements
         [HttpGet]
         public IEnumerable<TodoItem> GetAll()
         {
             return _context.TodoItems.ToList();
         }
 
+        // /api/todo/{id} - GET - All info about one element
         [HttpGet("{id}", Name = "GetTodo")]
         public IActionResult GetById(long id)
         {
@@ -32,7 +34,8 @@ namespace TodoApi.Controllers
             }
             return new ObjectResult(item);
         }
-
+        
+        // /api/todo - POST - create a new element
         [HttpPost]
         public IActionResult Create([FromBody] TodoItem item)
         {
@@ -50,6 +53,7 @@ namespace TodoApi.Controllers
             return CreatedAtRoute("GetTodo", new { id = item.Id }, item);
         }
 
+        // /api/todo/{id} - PUT - Update one element
         [HttpPut("{id}")]
         public IActionResult Update(long id, [FromBody] TodoItem item)
         {
@@ -74,6 +78,7 @@ namespace TodoApi.Controllers
             return new NoContentResult();
         }
 
+        // /api/todo/{id} - DELETE - Delete a especific element
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {

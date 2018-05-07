@@ -20,77 +20,71 @@ namespace TodoApi.Controllers
         [HttpGet]
         public IEnumerable<TodoItem> GetAll()
         {
-            return _context.TodoItems.ToList();
+            Crud _crud = new Crud(_context);
+            return _crud.GetAllElements();
         }
 
         // /api/todo/{id} - GET - All info about one element
         [HttpGet("{id}", Name = "GetTodo")]
         public IActionResult GetById(long id)
         {
-            var item = _context.TodoItems.FirstOrDefault(t => t.Id == id);
-            if (item == null)
+            Crud _crud = new Crud(_context);
+            TodoItem _item = _crud.GetElement(id);
+
+            if (_item == null)
             {
                 return NotFound();
             }
-            return new ObjectResult(item);
+            return new ObjectResult(_item);
         }
-        
+
         // /api/todo - POST - create a new element
         [HttpPost]
         public IActionResult Create([FromBody] TodoItem item)
         {
-            if (item == null)
+            Crud _crud = new Crud(_context);
+            if (_crud.AddElement(item))
+            {
+                return CreatedAtRoute("GetTodo", new { id = item.Id }, item);
+            }
+            else
             {
                 return BadRequest();
             }
-            Utils _utils = new Utils();
-            item.TimestampUpdate = _utils.GetTimestamp(System.DateTime.Now);
-            item.Content = _utils.DataToJson(item);
-
-            _context.TodoItems.Add(item);
-            _context.SaveChanges();
-
-            return CreatedAtRoute("GetTodo", new { id = item.Id }, item);
         }
 
         // /api/todo/{id} - PUT - Update one element
         [HttpPut("{id}")]
         public IActionResult Update(long id, [FromBody] TodoItem item)
         {
-            if (item == null || item.Id != id)
+            Crud _crud = new Crud(_context);
+            int _result = _crud.UpdateElement(id, item);
+
+            switch (_result)
             {
-                return BadRequest();
+                case GlobalConstants.NOT_FOUND:
+                    return NotFound();
+                case GlobalConstants.BAD_REQUEST:
+                    return BadRequest();
+                default:
+                    return new NoContentResult();
             }
-
-            var todo = _context.TodoItems.FirstOrDefault(t => t.Id == id);
-            if (todo == null)
-            {
-                return NotFound();
-            }
-
-            Utils _utils = new Utils();
-            todo.TimestampUpdate = _utils.GetTimestamp(System.DateTime.Now);
-            todo.Name = item.Name;
-
-            todo.Content = _utils.DataToJson(todo);
-            _context.TodoItems.Update(todo);
-            _context.SaveChanges();
-            return new NoContentResult();
         }
 
         // /api/todo/{id} - DELETE - Delete a especific element
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            var todo = _context.TodoItems.FirstOrDefault(t => t.Id == id);
-            if (todo == null)
-            {
-                return NotFound();
-            }
+            Crud _crud = new Crud(_context);
+            int _result = _crud.DeleteElement(id);
 
-            _context.TodoItems.Remove(todo);
-            _context.SaveChanges();
-            return new NoContentResult();
+            switch (_result)
+            {
+                case GlobalConstants.NOT_FOUND:
+                    return NotFound();
+                default:
+                    return new NoContentResult();
+            }
         }
     }
 }

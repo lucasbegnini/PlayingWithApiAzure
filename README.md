@@ -1,16 +1,16 @@
 # PlayingWithApiAzure
 
-# URL BASE - http://todoapi20180506035637.azurewebsites.net/api
+# URL - http://todoapi20180506035637.azurewebsites.net
 
-#Get - /todo/
+#GET - /todo/
 get all elements
 Return: All elements in Json Format
 
-#Get - /todo/{id}
+#GET - /todo/{id}
 get info about a {id} element
 Return: A element info in Json Format
 
-#Post /todo/
+#POST /todo/
 Create a new element
 Paramenters:
 {
@@ -18,10 +18,10 @@ Paramenters:
 }
 Return: All info about element that was add
 
-#Put /todo/{id}
+#PUT /todo/{id}
 Update a {id} element info.
 Return: 200 OK
 
-#Delete /todo/{id}
+#DELETE /todo/{id}
 Delete a {id} element info.
 Return: 200 OK

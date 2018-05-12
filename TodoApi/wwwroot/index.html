@@ -30,35 +30,57 @@
     </style>
 </head>
 <body>
-    <h1>To-do CRUD</h1>
-    <h3>Add</h3>
+    <h1>Test API</h1>
+    <h3>#POST /api/todo - insert new item </h3>
     <form action="javascript:void(0);" method="POST" onsubmit="addItem()">
-        <input type="text" id="add-name" placeholder="New to-do">
-        <input type="submit" value="Add">
+        <input type="text" id="add-name" placeholder="New item">
+        <input type="submit" value="Insert">
     </form>
 
-    <div id="spoiler">
-        <h3>Edit</h3>
-        <form class="my-form">
-            <input type="hidden" id="edit-id">
-            <input type="checkbox" id="edit-isComplete">
-            <input type="text" id="edit-name">
-            <input type="submit" value="Edit">
-            <a onclick="closeInput()" aria-label="Close">&#10006;</a>
-        </form>
-    </div>
+    <h3>#answer </h3>
+    <textarea rows="8" cols="100" id="post-answer">
+    </textarea>
 
-    <p id="counter"></p>
+    <h3>#GET /api/todo - get all items </h3>
+    <form action="javascript:void(0);" method="POST" onsubmit="getAllItems()">
+        <input type="submit" value="Do It">
+    </form>
 
-    <table>
-        <tr>
-            <th>Is Complete</th>
-            <th>Name</th>
-            <th></th>
-            <th></th>
-        </tr>
-        <tbody id="todos"></tbody>
-    </table>
+    <h3>#answer </h3>
+    <textarea rows="8" cols="100" id="get-all-answer">
+    </textarea>
+
+    <h3>#GET /api/todo/{id} - get especific item </h3>
+    <form action="javascript:void(0);" method="POST" onsubmit="getEspecificItem()">
+        <input type="text" id="item-search" placeholder="Search item">
+        <input type="submit" value="Do It">
+    </form>
+
+    <h3>#answer </h3>
+    <textarea rows="8" cols="100" id="get-especific-answer">
+    </textarea>
+
+    <h3>#PUT /api/todo/{id} - update item values throught Id </h3>
+    <form action="javascript:void(0);" method="PUT" onsubmit="updateItem()">
+        <input type="text" id="item-id-update" placeholder="item id">
+        <input type="text" id="item-name-update" placeholder="item name">
+        <input type="submit" value="Do It">
+    </form>
+
+    <h3>#answer </h3>
+    <textarea rows="8" cols="100" id="update-answer">
+    </textarea>
+
+    <h3>#DELETE /api/todo/{id} - delete item values throught Id </h3>
+    <form action="javascript:void(0);" method="PUT" onsubmit="deleteItem()">
+        <input type="text" id="item-id-delete" placeholder="item id">
+        <input type="text" id="item-name-delete" placeholder="item name">
+        <input type="submit" value="Do It">
+    </form>
+
+    <h3>#answer </h3>
+    <textarea rows="8" cols="100" id="delete-answer">
+    </textarea>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="

@@ -1,48 +1,46 @@
 ﻿const uri = 'api/todo';
 let todos = null;
-function getCount(data) {
-    const el = $('#counter');
-    let name = 'to-do';
-    if (data) {
-        if (data > 1) {
-            name = 'to-dos';
-        }
-        el.text(data + ' ' + name);
-    } else {
-        el.html('No ' + name);
-    }
-}
 
 $(document).ready(function () {
-    getData();
+    getAllItems();
 });
 
-function getData() {
+function getAllItems() {
+
     $.ajax({
         type: 'GET',
+        accepts: 'application/json',
         url: uri,
-        success: function (data) {
-            $('#todos').empty();
-            getCount(data.length);
-            $.each(data, function (key, item) {
-                const checked = item.isComplete ? 'checked' : '';
+        contentType: 'application/json',
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#get-all-answer").val("Failed request");
+        },
+        success: function (result) {
+            $("#get-all-answer").val(JSON.stringify(result));
+        }
+    });
+}
 
-                $('<tr><td><input disabled="true" type="checkbox" ' + checked + '></td>' +
-                    '<td>' + item.name + '</td>' +
-                    '<td><button onclick="editItem(' + item.id + ')">Edit</button></td>' +
-                    '<td><button onclick="deleteItem(' + item.id + ')">Delete</button></td>' +
-                    '</tr>').appendTo($('#todos'));
-            });
+function getEspecificItem() {
 
-            todos = data;
+    $.ajax({
+        type: 'GET',
+        accepts: 'application/json',
+        url: uri + '/' + $('#item-search').val(),
+        contentType: 'application/json',
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#get-especific-answer").val("Failed request");
+        },
+        success: function (result) {
+            $("#get-especific-answer").val(JSON.stringify(result));
         }
     });
 }
 
 function addItem() {
+
     const item = {
-        'name': $('#add-name').val(),
-        'isComplete': false
+        'name': $('#add-name').val()
     };
 
     $.ajax({
@@ -52,11 +50,10 @@ function addItem() {
         contentType: 'application/json',
         data: JSON.stringify(item),
         error: function (jqXHR, textStatus, errorThrown) {
-            alert('here');
+            $("#post-answer").val("Failed request");
         },
         success: function (result) {
-            getData();
-            $('#add-name').val('');
+            $("#post-answer").val(JSON.stringify(result));
         }
     });
 }
@@ -66,44 +63,43 @@ function deleteItem(id) {
         url: uri + '/' + id,
         type: 'DELETE',
         success: function (result) {
-            getData();
         }
     });
 }
 
-function editItem(id) {
-    $.each(todos, function (key, item) {
-        if (item.id === id) {
-            $('#edit-name').val(item.name);
-            $('#edit-id').val(item.id);
-            $('#edit-isComplete').val(item.isComplete);
-        }
-    });
-    $('#spoiler').css({ 'display': 'block' });
-}
+function updateItem() {
 
-$('.my-form').on('submit', function () {
     const item = {
-        'name': $('#edit-name').val(),
-        'isComplete': $('#edit-isComplete').is(':checked'),
-        'id': $('#edit-id').val()
+        'name': $('#item-name-update').val(),
+        'id': $('#item-id-update').val()
     };
 
     $.ajax({
-        url: uri + '/' + $('#edit-id').val(),
         type: 'PUT',
         accepts: 'application/json',
+        url: uri + '/' + $('#item-id-update').val(),
         contentType: 'application/json',
         data: JSON.stringify(item),
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#update-answer").val("Failed request");
+        },
         success: function (result) {
-            getData();
+            $("#update-answer").val("Item update with sucess");
         }
     });
+}
 
-    closeInput();
-    return false;
-});
-
-function closeInput() {
-    $('#spoiler').css({ 'display': 'none' });
+function deleteItem() {
+    $.ajax({
+        type: 'DELETE',
+        accepts: 'application/json',
+        url: uri + '/' + $('#item-id-update').val(),
+        contentType: 'application/json',
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#update-answer").val("Failed request");
+        },
+        success: function (result) {
+            $("#update-answer").val("Item deleted with sucess");
+        }
+    });
 }

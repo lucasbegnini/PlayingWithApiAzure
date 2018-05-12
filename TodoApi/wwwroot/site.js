@@ -96,10 +96,10 @@ function deleteItem() {
         url: uri + '/' + $('#item-id-update').val(),
         contentType: 'application/json',
         error: function (jqXHR, textStatus, errorThrown) {
-            $("#update-answer").val("Failed request");
+            $("#delete-answer").val("Failed request");
         },
         success: function (result) {
-            $("#update-answer").val("Item deleted with sucess");
+            $("#delete-answer").val("Item deleted with sucess");
         }
     });
 }

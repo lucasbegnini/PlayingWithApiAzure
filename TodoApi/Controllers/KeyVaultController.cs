@@ -9,10 +9,10 @@ using TodoApi.Models;
 namespace TodoApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/KeyVault")]
+    [Route("api/keyvault")]
     public class KeyVaultController : Controller
     {
-        // /api/todo - GET - All elements
+        // /api/KeyVault - GET - All elements
         [HttpGet]
         public string GetToken()
         {
@@ -21,6 +21,7 @@ namespace TodoApi.Controllers
             {
                 return await kv.GetKeyVaultInfo();
             });
+            var result = task.Wait(10000);
             return task.Result;
         }
     }

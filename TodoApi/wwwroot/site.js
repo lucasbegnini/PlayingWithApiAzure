@@ -1,4 +1,5 @@
 ﻿const uri = 'api/todo';
+const uriKeyVault = 'api/keyvault';
 let todos = null;
 
 $(document).ready(function () {
@@ -100,6 +101,22 @@ function deleteItem() {
         },
         success: function (result) {
             $("#delete-answer").val("Item deleted with sucess");
+        }
+    });
+}
+
+function getKeyVaultInfo() {
+
+    $.ajax({
+        type: 'GET',
+        accepts: 'application/json',
+        url: uriKeyVault,
+        contentType: 'application/json',
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#get-keyvault-answer").val("Failed request");
+        },
+        success: function (result) {
+            $("#get-keyvault-answer").val(JSON.stringify(result));
         }
     });
 }
